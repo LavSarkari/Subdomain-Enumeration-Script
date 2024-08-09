@@ -77,6 +77,9 @@ To install the required tools, follow these steps:
 8. **EyeWitness** (Optional)
 
     You can install EyeWitness by following the instructions provided in the [EyeWitness GitHub repository](https://github.com/FortyNorthSecurity/EyeWitness).
+   ```bash
+    sudo apt install eyewitness
+    ```
 
 ## Installation
 
