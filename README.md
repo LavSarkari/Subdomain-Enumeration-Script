@@ -83,8 +83,8 @@ To install the required tools, follow these steps:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/your-repository.git
-    cd your-repository
+    git clone https://github.com/LavSarkari/Subdomain-Enumeration-Script.git
+    cd Subdomain-Enumeration-Script
     ```
 
 2. Ensure the script is executable:
