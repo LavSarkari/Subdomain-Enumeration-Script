@@ -1,131 +1,183 @@
-# Subdomain Enumeration Script
+# Subdomain Enumeration Tool v2.0
 
-This script automates the process of subdomain enumeration using multiple tools and techniques. It performs domain reconnaissance by discovering subdomains and checking their availability.
+A powerful and comprehensive subdomain enumeration script that combines multiple tools and techniques to discover subdomains of a target domain.
 
 ## Features
 
-- Runs multiple subdomain discovery tools including `Sublist3r`, `assetfinder`, `amass`, `Subfinder`, and `crt.sh`.
-- Performs DNS brute-forcing using a wordlist.
-- Probes discovered subdomains to check for alive hosts.
-- Saves the results in organized files.
-- **Optional**: Integrates with EyeWitness to take screenshots of alive subdomains.
+- **Multiple Enumeration Modes**:
+  - Passive Mode: Quick scan using passive sources
+  - Active Mode: Includes port scanning and active enumeration
+  - Full Mode: Comprehensive scan with all features
 
-## Prerequisites
+- **Tool Integration**:
+  - Core Tools: Sublist3r, Assetfinder, Amass, Subfinder, httprobe
+  - Additional Tools: chaos-client, findomain, waybackurls, gau, hakrawler
+  - Scanning Tools: nmap, wafw00f, whatweb, masscan, ffuf
+  - Advanced Tools: gospider, subjack, httpx, nuclei
 
-Ensure you have the following tools installed on your system:
+- **Output Formats**:
+  - Text Report: Simple and readable format
+  - JSON Output: Structured data for automation
+  - HTML Report: Beautiful and interactive report with charts
 
-- `Sublist3r`
-- `assetfinder`
-- `amass`
-- `Subfinder`
-- `crt.sh` (via `curl`)
-- `jq`
-- `dig`
-- `httprobe`
-- **Optional**: `EyeWitness` for screenshot functionality
-
-## Installation of Tools
-
-To install the required tools, follow these steps:
-
-1. **Sublist3r**
-
-    ```bash
-    pip install sublist3r
-    ```
-
-2. **assetfinder**
-
-    ```bash
-    go install github.com/tomnomnom/assetfinder@latest
-    ```
-
-3. **amass**
-
-    ```bash
-    sudo apt-get install amass
-    ```
-
-4. **Subfinder**
-
-    ```bash
-    go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-    ```
-
-5. **crt.sh** (via `curl`)
-
-    `crt.sh` is queried using `curl`, which is commonly pre-installed. Ensure `curl` and `jq` are installed:
-
-    ```bash
-    sudo apt-get install curl jq
-    ```
-
-6. **dig**
-
-    `dig` is part of the `dnsutils` package:
-
-    ```bash
-    sudo apt-get install dnsutils
-    ```
-
-7. **httprobe**
-
-    ```bash
-    go install github.com/tomnomnom/httprobe@latest
-    ```
-
-8. **EyeWitness** (Optional)
-
-    You can install EyeWitness by following the instructions provided in the [EyeWitness GitHub repository](https://github.com/FortyNorthSecurity/EyeWitness).
-   ```bash
-    sudo apt install eyewitness
-    ```
+- **Advanced Features**:
+  - Parallel Processing Support
+  - Proxy Support
+  - VPN Integration
+  - Custom Configuration
+  - Progress Tracking
+  - Tool Status Monitoring
 
 ## Installation
 
 1. Clone the repository:
+```bash
+git clone https://github.com/LavSarkari/Subdomain-Enumeration-Script.git
+cd subdomain-enumeration-tool
+```
 
-    ```bash
-    git clone https://github.com/LavSarkari/Subdomain-Enumeration-Script.git
-    cd Subdomain-Enumeration-Script
-    ```
+2. Make the script executable:
+```bash
+chmod +x subdomain_enumeration.sh
+```
 
-2. Ensure the script is executable:
-
-    ```bash
-    chmod +x subdomain_enumeration.sh
-    ```
+3. Run the script (it will automatically install required tools):
+```bash
+./subdomain_enumeration.sh -d example.com
+```
 
 ## Usage
 
-Run the script by providing the target domain as an argument:
-
+### Basic Usage
 ```bash
-./subdomain_enumeration.sh example.com
+./subdomain_enumeration.sh -d example.com
 ```
 
-This will create an output directory named `subdomains_example.com` and save the results in various files:
-
-- `sublist3r.txt` - Results from Sublist3r
-- `assetfinder.txt` - Results from assetfinder
-- `amass.txt` - Results from amass
-- `subfinder.txt` - Results from Subfinder
-- `crtsh.txt` - Results from crt.sh
-- `dns_bruteforce.txt` - Results from DNS brute-forcing
-- `all_subdomains.txt` - Aggregated list of all discovered subdomains
-- `alive_subdomains.txt` - List of alive subdomains
-
-## Optional: EyeWitness Integration
-
-To enhance your reconnaissance, you can integrate EyeWitness to take screenshots of all alive subdomains:
-
-### Add Step 9 to Your Script
-
-Append the following step to the end of your script:
-
+### Advanced Usage
 ```bash
-# Step 9: Run EyeWitness on alive subdomains
-echo "[*] Running EyeWitness on alive subdomains..."
-EYEWITNESS_DIR="$OUTPUT_DIR/eyewitness"
-mkdir -p $EYEWITNESS_DIR
-EyeWitness --web -f $ALIVE_FILE -d $EYEWITNESS_DIR --headless
+./subdomain_enumeration.sh -d example.com -m full -t 20 -o html -p http://proxy:8080 -v
+```
+
+### Command Line Options
+
+| Option | Long Option | Description | Default | Required |
+|--------|-------------|-------------|---------|----------|
+| `-d` | `--domain` | Target domain to enumerate | None | Yes |
+| `-m` | `--mode` | Scan mode: passive/active/full | passive | No |
+| `-t` | `--threads` | Number of threads for parallel processing | 10 | No |
+| `-o` | `--output` | Output format: text/json/html | text | No |
+| `-p` | `--proxy` | Proxy URL for requests | None | No |
+| `-v` | `--vpn` | Enable VPN mode | false | No |
+| `-c` | `--config` | Custom config file | config.json | No |
+| `-h` | `--help` | Show help message | None | No |
+
+### Scan Modes
+
+1. **Passive Mode** (`-m passive`):
+   - Quick scan using passive sources
+   - Uses tools like Sublist3r, Assetfinder, Amass, Subfinder
+   - No direct interaction with target
+   - Fastest mode
+
+2. **Active Mode** (`-m active`):
+   - Includes port scanning and active enumeration
+   - Uses tools like nmap, whatweb, wafw00f
+   - Direct interaction with target
+   - Moderate speed
+
+3. **Full Mode** (`-m full`):
+   - Comprehensive scan with all features
+   - Combines passive and active techniques
+   - Additional tools like gospider, subjack, nuclei
+   - Most thorough but slowest mode
+
+### Output Formats
+
+1. **Text Report** (`-o text`):
+   - Simple and readable format
+   - Shows statistics and results
+   - Easy to parse and process
+
+2. **JSON Output** (`-o json`):
+   - Structured data format
+   - Suitable for automation
+   - Easy to integrate with other tools
+
+3. **HTML Report** (`-o html`):
+   - Beautiful and interactive report
+   - Includes charts and visualizations
+   - Easy to share and view
+
+### Proxy and VPN Support
+
+- **Proxy Support** (`-p http://proxy:8080`):
+  - Use HTTP/HTTPS proxy for requests
+  - Useful for avoiding rate limits
+  - Supports authentication
+
+- **VPN Mode** (`-v`):
+  - Enable VPN mode
+  - Requires OpenVPN configuration
+  - Useful for anonymous scanning
+
+## Output Files
+
+The tool creates the following files in the output directory:
+
+- `subdomains_[domain]/`: Main output directory
+  - `all_subdomains.txt`: All discovered subdomains
+  - `alive_subdomains.txt`: Verified alive subdomains
+  - `analysis.[format]`: Analysis report in specified format
+  - Tool-specific output files (e.g., `nmap.txt`, `whatweb.txt`)
+
+## Requirements
+
+- Linux/Unix-based system
+- Bash shell
+- Internet connection
+- Root privileges (for some tool installations)
+- Python 3.x (for some tools)
+- Go (for some tools)
+
+## Tool Dependencies
+
+The script will automatically install the following tools if missing:
+
+### Core Tools
+- Sublist3r
+- Assetfinder
+- Amass
+- Subfinder
+- httprobe
+
+### Additional Tools
+- chaos-client
+- findomain
+- waybackurls
+- gau
+- hakrawler
+
+### Scanning Tools
+- nmap
+- wafw00f
+- whatweb
+- masscan
+- ffuf
+
+### Advanced Tools
+- gospider
+- subjack
+- httpx
+- nuclei
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Disclaimer
+
+This tool is for educational and authorized testing purposes only. Always ensure you have permission to scan the target domain.
